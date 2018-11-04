@@ -5,6 +5,9 @@ from pykeyboard import PyKeyboard
 import time
 from flask_ask import statement, Ask
 from twilio.twiml.voice_response import VoiceResponse, Gather, Say 
+import twilio.twiml
+from google_speech import recognize_speech
+
 
 app = Flask(__name__)
 ask = Ask(app, '/')
@@ -25,16 +28,17 @@ def sms():
 
 @app.route('/voice', methods = ['GET','POST'])
 def answer_call():
-	response = VoiceResponse()
-	body = response.gather()
+	resp = twilio.twiml.Response()
+	recording_url = request.values.get("RecordingUrl", None)
+	body = recognize_speech(recording_url)
 	k = PyKeyboard()
 	if body not in dictionary:
-		response.say('Move/Scroll Up: Up ,Move Left: Left, Move Right: Right, Move/Scroll Down: Down, Start: Start, Select : Select, A : A, B: B, L : L,  R : R', voice = 'man', language = 'en')
+		resp.say('Move/Scroll Up: Up ,Move Left: Left, Move Right: Right, Move/Scroll Down: Down, Start: Start, Select : Select, A : A, B: B, L : L,  R : R', voice = 'man', language = 'en')
 	else:
 		k.press_key(dictionary[body])
 		time.sleep(0.1)
 		k.release_key(dictionary[body])
-	return str(response)
+	return str(resp)
 '''
 @ask.intent('game')
 def alexa_plays(commands, convert = {'commands' : str}):
