@@ -4,12 +4,11 @@ from twilio.twiml.messaging_response import MessagingResponse
 from pykeyboard import PyKeyboard
 import time
 from flask_ask import statement, Ask
-from twython import TwythonStreamer
+from twilio.twiml.voice_response import VoiceResponse, Gather, Say 
 
 app = Flask(__name__)
 ask = Ask(app, '/')
 dictionary = {'Up': 'w', 'Down' : 's', 'Left' : 'a', 'Right' : 'd', 'Start' : 'r', 'Select' : 't', 'A' : '1', 'B' : '2', 'L' : 'q', 'R' : 'e'}
-
 
 @app.route('/sms', methods = ["GET","POST"])
 def sms():
@@ -17,12 +16,25 @@ def sms():
 	resp = MessagingResponse()
 	k = PyKeyboard()
 	if body not in dictionary:
-		resp.message('\n Move/Scroll Up: W, \n Move Left: A, \n Move Right: D, \n Move/Scroll Down: S, \n Open Menu: L, \n Select: R, \n Go Back: T')
+		resp.message('\n Move/Scroll Up: Up , \n Move Left: Left, \n Move Right: Right, \n Move/Scroll Down: Down, \n Start: Start, \n Select : Select, \n A : A, \n B: B, \n L : L, \n R : R')
 	else:
 		k.press_key(dictionary[body])
 		time.sleep(0.1)
 		k.release_key(dictionary[body])
 	return str(resp)
+
+@app.route('/voice', methods = ['GET','POST'])
+def answer_call():
+	response = VoiceResponse()
+	body = response.gather()
+	k = PyKeyboard()
+	if body not in dictionary:
+		response.say('Move/Scroll Up: Up ,Move Left: Left, Move Right: Right, Move/Scroll Down: Down, Start: Start, Select : Select, A : A, B: B, L : L,  R : R', voice = 'man', language = 'en')
+	else:
+		k.press_key(dictionary[body])
+		time.sleep(0.1)
+		k.release_key(dictionary[body])
+	return str(response)
 '''
 @ask.intent('game')
 def alexa_plays(commands, convert = {'commands' : str}):
