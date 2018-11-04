@@ -3,14 +3,15 @@ import player
 from twilio.twiml.messaging_response import MessagingResponse
 from pykeyboard import PyKeyboard
 import time
-from flask_ask import statement
+from flask_ask import statement, Ask
+from twython import TwythonStreamer
 
 app = Flask(__name__)
 ask = Ask(app, '/')
-
 dictionary = {'Up': 'w', 'Down' : 's', 'Left' : 'a', 'Right' : 'd', 'Start' : 'r', 'Select' : 't', 'A' : '1', 'B' : '2', 'L' : 'q', 'R' : 'e'}
-@app.route('/sms', methods = ["GET","POST"])
 
+
+@app.route('/sms', methods = ["GET","POST"])
 def sms():
 	body = request.values.get('Body', None)
 	resp = MessagingResponse()
@@ -22,11 +23,12 @@ def sms():
 		time.sleep(0.1)
 		k.release_key(dictionary[body])
 	return str(resp)
-
+'''
 @ask.intent('game')
-def alexa_plays():
+def alexa_plays(commands, convert = {'commands' : str}):
+	return statement('Hello')
 	data = request.slots('commands')
-	
+	data = commands 
 	if data == 'up':
 		k.press_key(dictionary['Up'])
 		time.sleep(0.1)
@@ -67,9 +69,8 @@ def alexa_plays():
 		k.press_key(dictionary['R'])
 		time.sleep(0.1)
 		k.release_key(dictionary['R'])
-	return str(resp)
-
-
+	return statement('Ayo')
+'''
 
 if __name__ == '__main__':
 	app.run(debug=True)	
