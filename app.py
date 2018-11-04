@@ -25,40 +25,41 @@ def sms():
 
 @ask.intent('game')
 def alexa_plays():
-	button = request.slot("game");
-	if button == 'up':
+	data = request.slots('commands')
+	
+	if data == 'up':
 		k.press_key(dictionary['Up'])
 		time.sleep(0.1)
 		k.release_key(dictionary['Up'])
-	elif button == 'down':
+	elif data == 'down':
 		k.press_key(dictionary['Down'])
 		time.sleep(0.1)
 		k.release_key(dictionary['Down'])
-	elif button == 'left':
+	elif data == 'left':
 		k.press_key(dictionary['Left'])
 		time.sleep(0.1)
 		k.release_key(dictionary['Left'])
-	elif button == 'right':
+	elif data == 'right':
 		k.press_key(dictionary['Right'])
 		time.sleep(0.1)
 		k.release_key(dictionary['Right'])
-	elif button == 'a':
+	elif data == 'a':
 		k.press_key(dictionary['A'])
 		time.sleep(0.1)
 		k.release_key(dictionary['A'])
-	elif button == 'b':
+	elif data == 'b':
 		k.press_key(dictionary['B'])
 		time.sleep(0.1)
 		k.release_key(dictionary['B'])
-	elif button == 'start':
+	elif data == 'start':
 		k.press_key(dictionary['Start'])
 		time.sleep(0.1)
 		k.release_key(dictionary['Start'])
-	elif button == 'select':
+	elif data == 'select':
 		k.press_key(dictionary['Select'])
 		time.sleep(0.1)
 		k.release_key(dictionary['Select'])
-	elif button == 'l':
+	elif data == 'l':
 		k.press_key(dictionary['L'])
 		time.sleep(0.1)
 		k.release_key(dictionary['L'])
