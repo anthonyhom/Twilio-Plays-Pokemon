@@ -1,4 +1,4 @@
-import urllib2
+import urllib.request
 import base64
 import subprocess
 import requests
@@ -20,7 +20,7 @@ def recognize_speech(url):
   retry = True
   while retry:
     try:
-      data = urllib2.urlopen(url).read()
+      data = urllib.request.urlopen(url).read()
       retry = False
     except:
       pass
